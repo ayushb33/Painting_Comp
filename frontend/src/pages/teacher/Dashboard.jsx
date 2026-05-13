@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import api from '../../api/axios';
-import { useAuthStore } from '../../store/authStore';
+import useAuthStore from '../../store/authStore';
 import Sidebar from '../../components/Sidebar';
 import Loader from '../../components/ui/Loader';
 import { Users, ClipboardList, Image, BarChart2, UserCircle, AlertTriangle } from 'lucide-react';
