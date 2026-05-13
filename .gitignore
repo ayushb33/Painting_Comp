@@ -1,0 +1,11 @@
+node_modules/
+**/node_modules/
+.env
+**/.env
+dist/
+build/
+*.log
+.DS_Store
+backend/.env
+backend/.env.example
+.env.example

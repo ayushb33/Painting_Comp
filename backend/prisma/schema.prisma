@@ -1,0 +1,136 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model School {
+  id                 Int       @id @default(autoincrement())
+  school_name        String
+  teacher_name       String
+  email              String    @unique
+  password_hash      String
+  contact_number     String?
+  city               String?
+  state              String?
+  profile_completed  Boolean   @default(false)
+  created_at         DateTime  @default(now())
+
+  students   Student[]
+  results    Result[]
+
+  @@map("schools")
+}
+
+model Student {
+  id                 Int       @id @default(autoincrement())
+  unique_student_id  String    @unique
+  full_name          String
+  class              String
+  section            String
+  father_name        String
+  admission_number   String
+  school_id          Int
+  created_at         DateTime  @default(now())
+
+  school     School     @relation(fields: [school_id], references: [id])
+  attendance Attendance?
+  painting   Painting?
+  result     Result?
+
+  @@unique([admission_number, school_id])
+  @@map("students")
+}
+
+model Attendance {
+  id         Int     @id @default(autoincrement())
+  student_id Int     @unique
+  is_present Boolean @default(false)
+
+  student Student @relation(fields: [student_id], references: [id], onDelete: Cascade)
+
+  @@map("attendance")
+}
+
+model Painting {
+  id          Int       @id @default(autoincrement())
+  student_id  Int       @unique
+  image_url   String
+  is_approved Boolean   @default(false)
+  approved_at DateTime?
+  created_at  DateTime  @default(now())
+
+  student Student  @relation(fields: [student_id], references: [id], onDelete: Cascade)
+  scores  Score[]
+
+  @@map("paintings")
+}
+
+model Judge {
+  id            Int     @id @default(autoincrement())
+  name          String
+  email         String  @unique
+  password_hash String
+  created_at    DateTime @default(now())
+
+  scores Score[]
+
+  @@map("judges")
+}
+
+model Score {
+  id                  Int      @id @default(autoincrement())
+  painting_id         Int
+  judge_id            Int
+  relevance_score     Int      // 1-5
+  creativity_score    Int      // 1-5
+  technique_score     Int      // 1-5
+  presentation_score  Int      // 1-5
+  total_score         Float    // calculated out of 100
+  created_at          DateTime @default(now())
+
+  painting Painting @relation(fields: [painting_id], references: [id], onDelete: Cascade)
+  judge    Judge    @relation(fields: [judge_id], references: [id])
+
+  @@unique([painting_id, judge_id])
+  @@map("scores")
+}
+
+model Result {
+  id         Int     @id @default(autoincrement())
+  school_id  Int
+  student_id Int     @unique
+  rank       Int
+  score      Float
+  published  Boolean @default(false)
+  created_at DateTime @default(now())
+
+  school  School  @relation(fields: [school_id], references: [id])
+  student Student @relation(fields: [student_id], references: [id])
+
+  @@map("results")
+}
+
+model Admin {
+  id            Int      @id @default(autoincrement())
+  name          String
+  email         String   @unique
+  password_hash String
+  created_at    DateTime @default(now())
+
+  @@map("admins")
+}
+
+model RefreshToken {
+  id         Int      @id @default(autoincrement())
+  token      String   @unique
+  user_id    Int
+  user_type  String   // ADMIN | TEACHER | JUDGE
+  expires_at DateTime
+  created_at DateTime @default(now())
+
+  @@map("refresh_tokens")
+}
