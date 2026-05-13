@@ -1,5 +1,5 @@
 import { NavLink, useNavigate } from 'react-router-dom';
-import useAuthStore from '../store/authStore';
+import { useAuthStore } from '../store/authStore';
 import toast from 'react-hot-toast';
 import api from '../api/axios';
 import { Palette, LogOut } from 'lucide-react';

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import api from '../../api/axios';
-import useAuthStore from '../../store/authStore';
+import { useAuthStore } from '../../store/authStore';
 import Sidebar from '../../components/Sidebar';
 import Loader from '../../components/ui/Loader';
 import { Users, ClipboardList, BarChart2, UserCircle, AlertTriangle, CheckCircle } from 'lucide-react';

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import api from '../../api/axios';
-import useAuthStore from '../../store/authStore';
+import { useAuthStore } from '../../store/authStore';
 import { Palette } from 'lucide-react';
 
 const ROLE_ROUTES = { ADMIN: '/admin', TEACHER: '/teacher', JUDGE: '/judge' };
